@@ -1,14 +1,17 @@
 import { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
-// import gsap from "gsap";
 import "./App.css";
 import Arrow from "./assets/arrow";
 import Bg1 from "./assets/bg-1.svg";
 import Bg2 from "./assets/bg-2.svg";
 import Bg3 from "./assets/bg-3.svg";
+import MobileBg1 from './assets/mobile-bg-1.svg';
+import MobileBg2 from './assets/mobile-bg-2.svg';
+import MobileBg3 from './assets/mobile-bg-3.svg';
 import Logo from "./assets/shopsoma-logo.svg";
 import TablerIconX from "./assets/tabler-icon-x";
 function App() {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 700);
   const [isFormDisplayed, setIsFormDisplayed] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const heroRef = useRef<HTMLDivElement>(null);
@@ -22,28 +25,39 @@ function App() {
   const bgImages = [
     {
       src: Bg1,
+      MobileSrc: MobileBg1,
       heroText: "African Fashion Has a New Home",
       ctaText: "Join the waitlist",
       alt: "Background Image 1",
     },
     {
       src: Bg2,
+      MobileSrc: MobileBg2,
       heroText: "African Designers you’ll love",
       ctaText: "Count Me In — I Shop African",
       alt: "Background Image 2",
     },
     {
       src: Bg3,
+      MobileSrc: MobileBg3,
       heroText: "Made in Africa. Worn with intention.",
       ctaText: "Sign me up",
       alt: "Background Image 3",
     },
   ];
   useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 700);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
     if (isFormDisplayed) return;
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % bgImages.length);
-    }, 7000);
+    }, 4000);
     return () => clearInterval(interval);
   }, [bgImages.length, isFormDisplayed]);
 
@@ -83,13 +97,13 @@ function App() {
   }, [currentIndex]);
 
   const currentBg = bgImages[currentIndex];
+  const bgSrc = isMobile ? currentBg.MobileSrc : currentBg.src;
 
   return (
     <main
       className="container app-bg"
-      // style={{ backgroundImage: `url(${currentBg.src})` }}
+      style={{ backgroundImage: `url(${bgSrc})` }}
     >
-      <img src={currentBg.src} alt={currentBg.alt} className="background-img" />
 
       <div className="logo">
         <img src={Logo} alt="Shop Soma Logo" />

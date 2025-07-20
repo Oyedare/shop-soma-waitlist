@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Lexend+Tera:wght@100..900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap"); */
 @font-face {
   font-family: "Coconat";
   src: url("/fonts/coconat/Coconat-Regular.woff2") format("woff2"),
@@ -13,6 +13,13 @@
   src: url("/fonts/coconat/Coconat-BoldExt.woff2") format("woff2"),
     url("/fonts/coconat/Coconat-BoldExt.woff") format("woff");
   font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Newsreader 6pt Light";
+  src: url("/public/fonts/Newsreader6pt-Light/Newsreader6pt-Light.ttf") format("ttf");
+  font-weight: 300;
   font-style: normal;
 }
 
@@ -43,5 +50,5 @@ input {
   outline: none;
   background-color: transparent;
   border-bottom: 1px solid #105e53;
-  font-family: "Newsreader", serif;
+  font-family: "Newsreader 6pt Light", serif;
 }
