@@ -2,12 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import "./App.css";
 import Arrow from "./assets/arrow";
-import Bg1 from "./assets/bg-1.svg";
-import Bg2 from "./assets/bg-2.svg";
-import Bg3 from "./assets/bg-3.svg";
-import MobileBg1 from './assets/mobile-bg-1.svg';
-import MobileBg2 from './assets/mobile-bg-2.svg';
-import MobileBg3 from './assets/mobile-bg-3.svg';
+import Bg1 from "./assets/bg-1.webp";
+import Bg2 from "./assets/bg-2.webp";
+import Bg3 from "./assets/bg-3.webp";
+import MobileBg1 from './assets/mobile-bg-1.webp';
+import MobileBg2 from './assets/mobile-bg-2.webp';
+import MobileBg3 from './assets/mobile-bg-3.webp';
 import Logo from "./assets/shopsoma-logo.svg";
 import TablerIconX from "./assets/tabler-icon-x";
 function App() {
