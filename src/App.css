@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   width: 100vw;
   padding: clamp(1rem, 4vw, 2rem) 0;
   position: relative;
@@ -151,7 +151,7 @@
 }
 @media (max-width: 700px) {
   .container {
-    min-height: 100vh;
+    /* min-height: 100vh; */
     width: 100vw;
     /* padding: clamp(0.5rem, 4vw, 1rem) 0; */
   }
@@ -163,8 +163,6 @@
   .form-container {
     padding: 24px;
     gap: 32px;
-    /* left: 50%;
-    transform: translateX(-50%); */
     transform: translateX(-50%); 
     bottom: 0;
   }
