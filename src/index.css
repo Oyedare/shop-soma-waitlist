@@ -1,0 +1,47 @@
+@import url("https://fonts.googleapis.com/css2?family=Lexend+Tera:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap");
+@font-face {
+  font-family: "Coconat";
+  src: url("/fonts/coconat/Coconat-Regular.woff2") format("woff2"),
+    url("/fonts/coconat/Coconat-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Coconat";
+  src: url("/fonts/coconat/Coconat-BoldExt.woff2") format("woff2"),
+    url("/fonts/coconat/Coconat-BoldExt.woff") format("woff");
+  font-weight: 800;
+  font-style: normal;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  color: #f0f5f4;
+  font-family: "Lexend Tera", sans-serif;
+  font-weight: 400;
+}
+
+button {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: #f0f5f4;
+}
+
+input {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  border-bottom: 1px solid #105e53;
+  font-family: "Newsreader", serif;
+}
