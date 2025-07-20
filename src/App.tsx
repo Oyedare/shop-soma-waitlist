@@ -87,17 +87,19 @@ function App() {
   return (
     <main
       className="container app-bg"
-      style={{ backgroundImage: `url(${currentBg.src})` }}
+      // style={{ backgroundImage: `url(${currentBg.src})` }}
     >
+      <img src={currentBg.src} alt={currentBg.alt} className="background-img" />
+
       <div className="logo">
         <img src={Logo} alt="Shop Soma Logo" />
       </div>
 
-      <div onClick={handleFormDisplay} className="hero-text-container">
+      <div className="hero-text-container">
         <h1 className="hero-big-text" ref={heroRef}>
           {currentBg.heroText}
         </h1>
-        <button className="cta" ref={ctaRef}>
+        <button onClick={handleFormDisplay} className="cta" ref={ctaRef}>
           <p>{currentBg.ctaText}</p>
           <Arrow />
         </button>
