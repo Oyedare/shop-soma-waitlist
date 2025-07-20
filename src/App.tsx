@@ -17,7 +17,6 @@ function App() {
 
   const handleFormDisplay = () => {
     setIsFormDisplayed(true);
-    document.body.style.overflow = "hidden";
   };
 
   const bgImages = [
@@ -87,16 +86,8 @@ function App() {
 
   return (
     <main
-      className="container"
-      style={{
-        minHeight: "100vh",
-        width: "100vw",
-        backgroundImage: `url(${currentBg.src})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        transition: "background-image 0.8s cubic-bezier(0.77,0,0.175,1)",
-      }}
+      className="container app-bg"
+      style={{ backgroundImage: `url(${currentBg.src})` }}
     >
       <div className="logo">
         <img src={Logo} alt="Shop Soma Logo" />
