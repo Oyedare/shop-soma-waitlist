@@ -18,7 +18,8 @@
 
 @font-face {
   font-family: "Newsreader 6pt Light";
-  src: url("/public/fonts/Newsreader6pt-Light/Newsreader6pt-Light.ttf") format("ttf");
+  src: url("/public/fonts/Newsreader6pt-Light/Newsreader6pt-Light.ttf")
+    format("ttf");
   font-weight: 300;
   font-style: normal;
 }
@@ -46,7 +47,11 @@ button {
 }
 
 input {
+  all: unset;
+  -webkit-appearance: none;
+  appearance: none;
   border: none;
+  border-radius: 0;
   outline: none;
   background-color: transparent;
   border-bottom: 1px solid #105e53;

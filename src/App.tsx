@@ -174,6 +174,8 @@ function App() {
 
         <button className="subscribe-btn">Subscribe</button>
       </form>
+
+      <div className="gradient-overlay"></div>
     </main>
   );
 }

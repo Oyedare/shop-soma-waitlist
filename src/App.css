@@ -20,6 +20,7 @@
   gap: clamp(1rem, 3vw, 2rem);
   width: clamp(90vw, 600px, 100vw);
   max-width: 600px;
+  z-index: 3;
 }
 
 .hero-big-text {
@@ -79,6 +80,7 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  width: 430px;
 }
 
 .form-text h3 {
@@ -121,6 +123,7 @@
   color: #105e53;
   font-weight: 300;
   font-size: 1rem;
+  opacity: 50%;
 }
 
 .bottom-inputs {
@@ -130,7 +133,7 @@
 }
 
 .warning-text {
-  font-size: 12px;
+  font-size: 10px;
   color: #105e53;
   letter-spacing: 10%;
   font-family: "Lexend Tera", sans-serif;
@@ -150,11 +153,16 @@
   cursor: pointer;
   width: 207px;
 }
-@media (max-width: 700px) {
-  .logo img{
-    width: 80%;
-  }
 
+.gradient-overlay {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 487px;
+  pointer-events: none;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.5) 34.13%, rgba(0, 0, 0, 0) 100%);
+}
+@media (max-width: 700px) {
   .form-container {
     gap: 2rem;
     padding: 24px;
