@@ -88,7 +88,7 @@ function App() {
       src: Bg2,
       MobileSrc: MobileBg2,
       heroText: "African Designers you’ll love",
-      ctaText: "Count Me In — I Shop African",
+      ctaText: "Count me in, I shop African",
       alt: "Background Image 2",
     },
     {
@@ -186,8 +186,7 @@ function App() {
           <div className="form-text">
             <h3>Welcome to the front row</h3>
             <p>
-              We’ll be in your inbox soon with early access, exclusive drops,
-              and designer edits.
+              You will be the first to know when we drop
             </p>
           </div>
           <button
