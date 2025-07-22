@@ -139,6 +139,7 @@
   font-family: "Lexend Tera", sans-serif;
   font-weight: 300;
   text-transform: uppercase;
+  opacity: 60%;
 }
 
 .subscribe-btn {
@@ -152,6 +153,27 @@
   letter-spacing: 10%;
   cursor: pointer;
   width: 207px;
+}
+
+.confirmation-message {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 654px;
+  width: 100%;
+  background-color: #f0f5f4;
+  border: 1px solid #105e53;
+  border-radius: 1px;
+  padding: 32px;
+  /* padding: clamp(1rem, 4vw, 2rem); */
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #105e53;
+  font-family: 'Newsreader 6pt Light', serif;
+  font-size: 1rem;
+  z-index: 100;
 }
 
 .gradient-overlay {
@@ -172,7 +194,8 @@
   }
 
   .form-text h3 {
-    font-size: 2rem;
+    font-size: 1.4rem;
+    /* letter-spacing: 0; */
   }
 
   .form-text p {
@@ -188,5 +211,9 @@
 
   .cta p {
     font-size: .75rem;
+  }
+
+  .confirmation-message {
+    padding: 24px;
   }
 }

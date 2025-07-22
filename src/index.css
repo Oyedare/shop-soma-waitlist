@@ -44,6 +44,7 @@ button {
   outline: none;
   background-color: transparent;
   color: #f0f5f4;
+  cursor: pointer;
 }
 
 input {
