@@ -44,8 +44,7 @@ function App() {
     formData.append("html_type", "simple");
 
     try {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const response = await fetch(
+      await fetch(
         "https://0fc5180e.sibforms.com/serve/MUIFAAsk7PlgqECi_Yiqp1Zsy4-jrwPfdw_1cr-tck6VKvzec5dHsV2p6Wac8OvjR1gP_pR-hl-HAZGcc8lFj9937DCSNVuY6QxVVBL8GE7H62bHKmQSXuzo0VuVUmpvPk7Hz3P8utfM7_mYCd2RQKpUZE3mh0CojPZB9-OS19ZXMt3WcCOzOVMRTVvdmvt3Sze7UIDFoiz3ro21",
         {
           method: "POST",
