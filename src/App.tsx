@@ -5,37 +5,21 @@ import Arrow from "./assets/arrow";
 import Bg1 from "./assets/bg-1.webp";
 import Bg2 from "./assets/bg-2.webp";
 import Bg3 from "./assets/bg-3.webp";
-import MobileBg1 from "./assets/mobile-bg-1.webp";
-import MobileBg2 from "./assets/mobile-bg-2.webp";
-import MobileBg3 from "./assets/mobile-bg-3.webp";
+import MobileBg1 from './assets/mobile-bg-1.webp';
+import MobileBg2 from './assets/mobile-bg-2.webp';
+import MobileBg3 from './assets/mobile-bg-3.webp';
 import Logo from "./assets/shopsoma-logo.svg";
 import TablerIconX from "./assets/tabler-icon-x";
 function App() {
-  const [formValues, setFormValues] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-  });
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 700);
   const [isFormDisplayed, setIsFormDisplayed] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isMailSent, setIsMailSent] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLButtonElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
   const handleFormDisplay = () => {
     setIsFormDisplayed(true);
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsMailSent(true);
-    setIsFormDisplayed(false);
-    setFormValues({ firstName: "", lastName: "", email: "" });
-    setTimeout(() => {
-      setIsMailSent(false);
-    }, 3000);
   };
 
   const bgImages = [
@@ -120,6 +104,7 @@ function App() {
       className="container app-bg"
       style={{ backgroundImage: `url(${bgSrc})` }}
     >
+
       <div className="logo">
         <img src={Logo} alt="Shop Soma Logo" />
       </div>
@@ -142,11 +127,10 @@ function App() {
           display: isFormDisplayed ? "flex" : "none",
           zIndex: 100,
         }}
-        onSubmit={handleSubmit}
       >
         <div className="form-top">
           <div className="form-text">
-            <h3>Welcome to the front row</h3>
+            <h3>You’re officially on the list</h3>
             <p>
               We’ll be in your inbox soon with early access, exclusive drops,
               and designer edits.
@@ -168,20 +152,12 @@ function App() {
               placeholder="First Name"
               className="form-input"
               required
-              value={formValues.firstName}
-              onChange={(e) =>
-                setFormValues((v) => ({ ...v, firstName: e.target.value }))
-              }
             />
             <input
               type="text"
               placeholder="Last Name"
               className="form-input"
               required
-              value={formValues.lastName}
-              onChange={(e) =>
-                setFormValues((v) => ({ ...v, lastName: e.target.value }))
-              }
             />
           </div>
           <div className="bottom-inputs">
@@ -190,10 +166,6 @@ function App() {
               placeholder="Email Address"
               className="form-input"
               required
-              value={formValues.email}
-              onChange={(e) =>
-                setFormValues((v) => ({ ...v, email: e.target.value }))
-              }
             />
 
             <p className="warning-text">This field is required</p>
@@ -202,15 +174,6 @@ function App() {
 
         <button className="subscribe-btn">Subscribe</button>
       </form>
-
-      {isMailSent && (
-        <div className="confirmation-message">
-          <p>Welcome to the inner circle.</p>
-          <button onClick={() => setIsMailSent(false)}>
-            <TablerIconX />
-          </button>
-        </div>
-      )}
 
       <div className="gradient-overlay"></div>
     </main>
