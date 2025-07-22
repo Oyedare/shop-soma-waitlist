@@ -10,6 +10,7 @@ import MobileBg2 from "./assets/mobile-bg-2.webp";
 import MobileBg3 from "./assets/mobile-bg-3.webp";
 import Logo from "./assets/shopsoma-logo.svg";
 import TablerIconX from "./assets/tabler-icon-x";
+import Spinner from "./assets/spinner";
 function App() {
   const [formValues, setFormValues] = useState({
     firstName: "",
@@ -20,6 +21,8 @@ function App() {
   const [isFormDisplayed, setIsFormDisplayed] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMailSent, setIsMailSent] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const heroRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLButtonElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
@@ -28,14 +31,49 @@ function App() {
     setIsFormDisplayed(true);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsMailSent(true);
-    setIsFormDisplayed(false);
-    setFormValues({ firstName: "", lastName: "", email: "" });
-    setTimeout(() => {
-      setIsMailSent(false);
-    }, 3000);
+    setIsLoading(true);
+    setErrorMsg("");
+    const formData = new FormData();
+    formData.append("FIRSTNAME", formValues.firstName);
+    formData.append("LASTNAME", formValues.lastName);
+    formData.append("EMAIL", formValues.email);
+    formData.append("email_address_check", "");
+    formData.append("locale", "en");
+    formData.append("html_type", "simple");
+
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const response = await fetch(
+        "https://0fc5180e.sibforms.com/serve/MUIFAAsk7PlgqECi_Yiqp1Zsy4-jrwPfdw_1cr-tck6VKvzec5dHsV2p6Wac8OvjR1gP_pR-hl-HAZGcc8lFj9937DCSNVuY6QxVVBL8GE7H62bHKmQSXuzo0VuVUmpvPk7Hz3P8utfM7_mYCd2RQKpUZE3mh0CojPZB9-OS19ZXMt3WcCOzOVMRTVvdmvt3Sze7UIDFoiz3ro21",
+        {
+          method: "POST",
+          body: formData,
+          mode: "no-cors",
+        }
+      );
+
+      setIsMailSent(true);
+      setIsFormDisplayed(false);
+      setFormValues({ firstName: "", lastName: "", email: "" });
+      setIsLoading(false);
+      setErrorMsg("");
+      setTimeout(() => {
+        setIsMailSent(false);
+      }, 3000);
+    } catch (error) {
+      console.error("Submission error:", error);
+      setIsLoading(false);
+      setErrorMsg("Something went wrong. Please try again.");
+      setIsFormDisplayed(false);
+      setFormValues({ firstName: "", lastName: "", email: "" });
+      setIsMailSent(true);
+      setTimeout(() => {
+        setIsMailSent(false);
+        setErrorMsg("");
+      }, 3000);
+    }
   };
 
   const bgImages = [
@@ -165,6 +203,7 @@ function App() {
           <div className="top-inputs">
             <input
               type="text"
+              name="FIRSTNAME"
               placeholder="First Name"
               className="form-input"
               required
@@ -175,6 +214,7 @@ function App() {
             />
             <input
               type="text"
+              name="LASTNAME"
               placeholder="Last Name"
               className="form-input"
               required
@@ -187,6 +227,7 @@ function App() {
           <div className="bottom-inputs">
             <input
               type="email"
+              name="EMAIL"
               placeholder="Email Address"
               className="form-input"
               required
@@ -196,17 +237,38 @@ function App() {
               }
             />
 
+            <input
+              type="text"
+              name="email_address_check"
+              value=""
+              className="none"
+            />
+            <input className="none" type="hidden" name="locale" value="en" />
+            <input
+              className="none"
+              type="hidden"
+              name="html_type"
+              value="simple"
+            />
+
             <p className="warning-text">This field is required</p>
           </div>
         </div>
 
-        <button className="subscribe-btn">Subscribe</button>
+        <button className="subscribe-btn" disabled={isLoading}>
+          {isLoading ? <Spinner /> : "Subscribe"}
+        </button>
       </form>
 
       {isMailSent && (
-        <div className="confirmation-message">
-          <p>Welcome to the inner circle.</p>
-          <button onClick={() => setIsMailSent(false)}>
+        <div className={`confirmation-message${errorMsg ? " danger" : ""}`}>
+          <p>{errorMsg ? errorMsg : "Welcome to the inner circle."}</p>
+          <button
+            onClick={() => {
+              setIsMailSent(false);
+              setErrorMsg("");
+            }}
+          >
             <TablerIconX />
           </button>
         </div>
