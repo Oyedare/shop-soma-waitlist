@@ -35,44 +35,65 @@ function App() {
     e.preventDefault();
     setIsLoading(true);
     setErrorMsg("");
-    const formData = new FormData();
-    formData.append("FIRSTNAME", formValues.firstName);
-    formData.append("LASTNAME", formValues.lastName);
-    formData.append("EMAIL", formValues.email);
-    formData.append("email_address_check", "");
-    formData.append("locale", "en");
-    formData.append("html_type", "simple");
-
-    try {
-      await fetch(
-        "https://0fc5180e.sibforms.com/serve/MUIFAAsk7PlgqECi_Yiqp1Zsy4-jrwPfdw_1cr-tck6VKvzec5dHsV2p6Wac8OvjR1gP_pR-hl-HAZGcc8lFj9937DCSNVuY6QxVVBL8GE7H62bHKmQSXuzo0VuVUmpvPk7Hz3P8utfM7_mYCd2RQKpUZE3mh0CojPZB9-OS19ZXMt3WcCOzOVMRTVvdmvt3Sze7UIDFoiz3ro21",
-        {
-          method: "POST",
-          body: formData,
-          mode: "no-cors",
-        }
-      );
-
-      setIsMailSent(true);
-      setIsFormDisplayed(false);
-      setFormValues({ firstName: "", lastName: "", email: "" });
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    if (!window.grecaptcha) {
       setIsLoading(false);
-      setErrorMsg("");
-      setTimeout(() => {
-        setIsMailSent(false);
-      }, 3000);
-    } catch (error) {
-      console.error("Submission error:", error);
-      setIsLoading(false);
-      setErrorMsg("Something went wrong. Please try again.");
-      setIsFormDisplayed(false);
-      setFormValues({ firstName: "", lastName: "", email: "" });
-      setIsMailSent(true);
-      setTimeout(() => {
-        setIsMailSent(false);
-        setErrorMsg("");
-      }, 3000);
+      setErrorMsg("reCAPTCHA not loaded. Please try again.");
+      return;
     }
+    // Execute reCAPTCHA v3
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    window.grecaptcha.ready(() => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      window.grecaptcha
+        .execute("6LfGb4srAAAAAJ3WmmRWa-rLrlnklOJkw00eBw5j", {
+          action: "submit",
+        })
+        .then(async (token: string) => {
+          const formData = new FormData();
+          formData.append("FIRSTNAME", formValues.firstName);
+          formData.append("LASTNAME", formValues.lastName);
+          formData.append("EMAIL", formValues.email);
+          formData.append("email_address_check", "");
+          formData.append("locale", "en");
+          formData.append("html_type", "simple");
+          formData.append("recaptcha_token", token);
+
+          try {
+            await fetch(
+              "https://0fc5180e.sibforms.com/serve/MUIFADEJvsBL-RcLZf72BRE1Z1FiC_LxY4ZQoQzRMr25RpBabfGjRYtNLM1Wzd5AoF8JFHdCXWK7cx-sJqXXkD4ycEJ4hT-RiPEqXlwqoqI0iK2oS4-vrdMwdWc53fsMEXEMxOH7Po0DRP3fMD1IRDTtnDuGPn_OeCAYJxoUNuMTib_OWcEooVOZpitXg5qZqPWATjbJQdBI03sl",
+              {
+                method: "POST",
+                body: formData,
+                mode: "no-cors",
+              }
+            );
+
+            setIsMailSent(true);
+            setIsFormDisplayed(false);
+            setFormValues({ firstName: "", lastName: "", email: "" });
+            setIsLoading(false);
+            setErrorMsg("");
+            setTimeout(() => {
+              setIsMailSent(false);
+            }, 3000);
+          } catch (error) {
+            console.error("Submission error:", error);
+            setIsLoading(false);
+            setErrorMsg("Something went wrong. Please try again.");
+            setIsFormDisplayed(false);
+            setFormValues({ firstName: "", lastName: "", email: "" });
+            setIsMailSent(true);
+            setTimeout(() => {
+              setIsMailSent(false);
+              setErrorMsg("");
+            }, 3000);
+          }
+        });
+    });
   };
 
   const bgImages = [
@@ -184,9 +205,7 @@ function App() {
         <div className="form-top">
           <div className="form-text">
             <h3>Welcome to the front row</h3>
-            <p>
-              You will be the first to know when we drop
-            </p>
+            <p>You will be the first to know when we drop</p>
           </div>
           <button
             className="close-button"
