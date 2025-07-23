@@ -44,37 +44,32 @@ function App() {
     setIsLoading(true);
     setErrorMsg("");
 
+    const form = e.currentTarget; // ✅ store reference immediately
+
     try {
       const token = await window.grecaptcha.execute(
         "6LfGb4srAAAAAJ3WmmRWa-rLrlnklOJkw00eBw5j",
         { action: "submit" }
       );
 
-      const response = await fetch("/api/submit-form", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          firstName: formValues.firstName,
-          lastName: formValues.lastName,
-          email: formValues.email,
-          email_address_check: "",
-          locale: "en",
-          html_type: "simple",
-          token,
-        }),
-      });
+      // ✅ create hidden input for captcha
+      const tokenInput = document.createElement("input");
+      tokenInput.type = "hidden";
+      tokenInput.name = "g-recaptcha-response";
+      tokenInput.value = token;
+      form.appendChild(tokenInput); // ✅ safe now
 
-      const data = await response.json();
+      form.submit(); // ✅ manually trigger the submission
 
-      if (!response.ok) {
-        throw new Error(data.message || "Unknown error");
-      }
-
+      // UI state handling
       setIsMailSent(true);
       setIsFormDisplayed(false);
       setFormValues({ firstName: "", lastName: "", email: "" });
-      setIsLoading(false);
-      setTimeout(() => setIsMailSent(false), 3000);
+
+      setTimeout(() => {
+        setIsMailSent(false);
+        setIsLoading(false);
+      }, 3000);
     } catch (error) {
       console.error("Submission error:", error);
       setIsLoading(false);
@@ -185,15 +180,19 @@ function App() {
         </button>
       </div>
 
+      <iframe name="hidden_iframe" style={{ display: "none" }}></iframe>
+
       <form
         className="form-container"
-        action=""
+        action="https://0fc5180e.sibforms.com/serve/MUIFAAkTXNSnxSMVINcph_7c-yv8X1w_VyfpCqu-1ciY199sIkXcGGy8IupuBv-myaky8kaWcLj4mVI4ZZZAJsgeewC7_yhNdemgErNK1mRVac21ddNudyxbtGlx3nCqO4EPc3_XIqgzxFp_Q5YK2RhKf3ebdHeSXvF_irbqPSS80B_kQszMVj7X5Setuqg2fJCmRY03Na0fyppA"
+        method="POST"
+        target="hidden_iframe"
         ref={formRef}
+        onSubmit={handleSubmit}
         style={{
           display: isFormDisplayed ? "flex" : "none",
           zIndex: 100,
         }}
-        onSubmit={handleSubmit}
       >
         <div className="form-top">
           <div className="form-text">
