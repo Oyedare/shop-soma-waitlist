@@ -50,31 +50,31 @@ function App() {
         { action: "submit" }
       );
 
-      const formData = new FormData();
-      formData.append("FIRSTNAME", formValues.firstName);
-      formData.append("LASTNAME", formValues.lastName);
-      formData.append("EMAIL", formValues.email);
-      formData.append("email_address_check", "");
-      formData.append("locale", "en");
-      formData.append("html_type", "simple");
-      formData.append("g-recaptcha-response", token);
+      const response = await fetch("/api/submit-form", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName: formValues.firstName,
+          lastName: formValues.lastName,
+          email: formValues.email,
+          email_address_check: "",
+          locale: "en",
+          html_type: "simple",
+          token,
+        }),
+      });
 
-      await fetch(
-        "https://0fc5180e.sibforms.com/serve/MUIFAAkTXNSnxSMVINcph_7c-yv8X1w_VyfpCqu-1ciY199sIkXcGGy8IupuBv-myaky8kaWcLj4mVI4ZZZAJsgeewC7_yhNdemgErNK1mRVac21ddNudyxbtGlx3nCqO4EPc3_XIqgzxFp_Q5YK2RhKf3ebdHeSXvF_irbqPSS80B_kQszMVj7X5Setuqg2fJCmRY03Na0fyppA",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Unknown error");
+      }
 
       setIsMailSent(true);
       setIsFormDisplayed(false);
       setFormValues({ firstName: "", lastName: "", email: "" });
       setIsLoading(false);
-      setErrorMsg("");
-      setTimeout(() => {
-        setIsMailSent(false);
-      }, 3000);
+      setTimeout(() => setIsMailSent(false), 3000);
     } catch (error) {
       console.error("Submission error:", error);
       setIsLoading(false);
