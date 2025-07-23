@@ -11,6 +11,17 @@ import MobileBg3 from "./assets/mobile-bg-3.webp";
 import Logo from "./assets/shopsoma-logo.svg";
 import TablerIconX from "./assets/tabler-icon-x";
 import Spinner from "./assets/spinner";
+
+// Add grecaptcha to the Window interface for TypeScript
+declare global {
+  interface Window {
+    grecaptcha: {
+      ready: (cb: () => void) => void;
+      execute: (siteKey: string, options: { action: string }) => Promise<string>;
+    };
+  }
+}
+
 function App() {
   const [formValues, setFormValues] = useState({
     firstName: "",
@@ -26,6 +37,8 @@ function App() {
   const heroRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLButtonElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
+  const [captchaToken, setCaptchaToken] = useState("");
+  const hiddenFormRef = useRef<HTMLFormElement>(null);
 
   const handleFormDisplay = () => {
     setIsFormDisplayed(true);
@@ -35,63 +48,36 @@ function App() {
     e.preventDefault();
     setIsLoading(true);
     setErrorMsg("");
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
+
     if (!window.grecaptcha) {
       setIsLoading(false);
       setErrorMsg("reCAPTCHA not loaded. Please try again.");
       return;
     }
-    // Execute reCAPTCHA v3
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
+
     window.grecaptcha.ready(() => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
       window.grecaptcha
         .execute("6LfGb4srAAAAAJ3WmmRWa-rLrlnklOJkw00eBw5j", {
           action: "submit",
         })
-        .then(async (token: string) => {
-          const formData = new FormData();
-          formData.append("FIRSTNAME", formValues.firstName);
-          formData.append("LASTNAME", formValues.lastName);
-          formData.append("EMAIL", formValues.email);
-          formData.append("email_address_check", "");
-          formData.append("locale", "en");
-          formData.append("html_type", "simple");
-          formData.append("recaptcha_token", token);
+        .then((token: string) => {
+          setCaptchaToken(token);
 
-          try {
-            await fetch(
-              "https://0fc5180e.sibforms.com/serve/MUIFAAkTXNSnxSMVINcph_7c-yv8X1w_VyfpCqu-1ciY199sIkXcGGy8IupuBv-myaky8kaWcLj4mVI4ZZZAJsgeewC7_yhNdemgErNK1mRVac21ddNudyxbtGlx3nCqO4EPc3_XIqgzxFp_Q5YK2RhKf3ebdHeSXvF_irbqPSS80B_kQszMVj7X5Setuqg2fJCmRY03Na0fyppA",
-              {
-                method: "POST",
-                body: formData,
-                mode: "no-cors",
-              }
-            );
+          // Give React a moment to update form inputs
+          setTimeout(() => {
+            hiddenFormRef.current?.submit();
 
+            // UI state
             setIsMailSent(true);
             setIsFormDisplayed(false);
             setFormValues({ firstName: "", lastName: "", email: "" });
             setIsLoading(false);
             setErrorMsg("");
+
             setTimeout(() => {
               setIsMailSent(false);
             }, 3000);
-          } catch (error) {
-            console.error("Submission error:", error);
-            setIsLoading(false);
-            setErrorMsg("Something went wrong. Please try again.");
-            setIsFormDisplayed(false);
-            setFormValues({ firstName: "", lastName: "", email: "" });
-            setIsMailSent(true);
-            setTimeout(() => {
-              setIsMailSent(false);
-              setErrorMsg("");
-            }, 3000);
-          }
+          }, 100);
         });
     });
   };
@@ -292,6 +278,23 @@ function App() {
       )}
 
       <div className="gradient-overlay"></div>
+
+      <form
+        ref={hiddenFormRef}
+        action="https://0fc5180e.sibforms.com/serve/MUIFAAkTXNSnxSMVINcph_7c-yv8X1w_VyfpCqu-1ciY199sIkXcGGy8IupuBv-myaky8kaWcLj4mVI4ZZZAJsgeewC7_yhNdemgErNK1mRVac21ddNudyxbtGlx3nCqO4EPc3_XIqgzxFp_Q5YK2RhKf3ebdHeSXvF_irbqPSS80B_kQszMVj7X5Setuqg2fJCmRY03Na0fyppA"
+        method="POST"
+        target="hidden_iframe"
+        style={{ display: "none" }}
+      >
+        <input name="FIRSTNAME" value={formValues.firstName} readOnly />
+        <input name="LASTNAME" value={formValues.lastName} readOnly />
+        <input name="EMAIL" value={formValues.email} readOnly />
+        <input name="email_address_check" value="" readOnly />
+        <input name="locale" value="en" readOnly />
+        <input name="html_type" value="simple" readOnly />
+        <input name="recaptcha_token" value={captchaToken} readOnly />
+      </form>
+      <iframe name="hidden_iframe" style={{ display: "none" }}></iframe>
     </main>
   );
 }
